@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clipboard Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+</head>
+<body>
+    <h1>Clipboard Data</h1>
+
+    <textarea id="clipboard-data" placeholder="Clipboard data will appear here"></textarea>
+
+    <button id="paste-send-button">Paste & Send</button>
+
+    <br><br>
+
+    <h2>Response:</h2>
+
+    <textarea id="response-data" placeholder="Server response" readonly></textarea>
+
+    <script>
+        document.getElementById('paste-send-button').addEventListener('click', function() {
+            navigator.clipboard.readText().then(clipboardData => {
+                document.getElementById('clipboard-data').value = clipboardData;
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 'data': clipboardData })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response-data').value = data.response;
+                    new ClipboardJS('#copy-button');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
