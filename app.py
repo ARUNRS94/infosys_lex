@@ -22,10 +22,6 @@ def post_data():
     problem_statement = soup.find('div', {'id': 'problemStatement'})
     text = problem_statement.get_text()
 
-    # Print the filtered elements
-    #print(text)
-    #print("Choose the best one with out explanation")
-    # print(options_text)
     response = text
     response += "\n" + "Choose the best one with out explanation"
     #print(response)
@@ -35,8 +31,6 @@ def post_data():
         option_no = count + 1
         response += "\n" + str(option_no) + "." + i
         print(response)
-
-    #response = "This is the server response"
 
     # Copy response to clipboard
     pyperclip.copy(response)
